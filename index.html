@@ -5,74 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>转转的个人网站</title>
     <style>
+        /* ========== 颜色系统（修改此处即可全局换色） ========== */
+        :root {
+            --primary: #2e7d50;          /* 主色调：森林绿 */
+            --primary-light: #4a9e6b;    /* 浅绿（渐变/悬停） */
+            --primary-dark: #1b5233;     /* 深绿（文字/按钮） */
+            --bg-body: #f5faf7;          /* 全局背景：极浅绿 */
+            --bg-alt: #e8f5e9;           /* 交替区块背景 */
+            --bg-card: #ffffff;          /* 卡片/输入框背景 */
+            --bg-input: #eef7ee;         /* 输入框/搜索框底色 */
+            --accent: #f4d03f;           /* 强调色：暖金（按钮/高亮） */
+            --text-main: #1a3328;        /* 主文本：深墨绿 */
+            --text-secondary: #3d5a4a;   /* 次文本：中绿灰 */
+            --text-muted: #6b8a7a;       /* 辅助文本：浅绿灰 */
+            --shadow-light: rgba(46, 125, 80, 0.08);
+            --shadow-medium: rgba(46, 125, 80, 0.12);
+            --shadow-hover: rgba(46, 125, 80, 0.25);
+        }
+
         /* ========== 全局样式 ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; line-height: 1.6; color: #333; background-color: #f9f9f9; }
+        body { font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; line-height: 1.6; color: var(--text-main); background-color: var(--bg-body); }
 
         /* ========== 导航栏 ========== */
-        .navbar { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .logo { font-size: 1.5rem; font-weight: bold; color: #6c5ce7; }
+        .navbar { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px var(--shadow-light); z-index: 1000; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
         .nav-links { list-style: none; display: flex; gap: 30px; }
-        .nav-links a { text-decoration: none; color: #333; font-weight: 500; transition: color 0.3s; }
-        .nav-links a:hover { color: #6c5ce7; }
-        .menu-btn { display: none; font-size: 1.5rem; cursor: pointer; }
+        .nav-links a { text-decoration: none; color: var(--text-main); font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .menu-btn { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* 搜索栏样式 */
+        .search-box { display: flex; align-items: center; background: var(--bg-input); border-radius: 25px; padding: 5px 10px; margin: 0 20px; transition: all 0.3s; }
+        .search-box:focus-within { background: var(--bg-card); box-shadow: 0 0 0 2px var(--primary); }
+        .search-box input { border: none; background: transparent; padding: 6px 8px; font-size: 0.9rem; width: 130px; outline: none; color: var(--text-main); }
+        .search-box button { background: none; border: none; cursor: pointer; font-size: 1.2rem; padding: 0 4px; color: var(--primary); transition: transform 0.2s; }
+        .search-box button:hover { transform: scale(1.1); }
 
         /* ========== Hero 区域 ========== */
-        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: #fff; padding: 0 20px; }
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: #fff; padding: 0 20px; }
         .hero h1 { font-size: 3rem; margin-bottom: 10px; }
-        .highlight { color: #ffeaa7; }
-        .subtitle { font-size: 1.3rem; margin-bottom: 15px; opacity: 0.9; }
-        .description { font-size: 1rem; margin-bottom: 30px; opacity: 0.85; }
-        .btn { display: inline-block; padding: 12px 35px; background: #ffeaa7; color: #6c5ce7; text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 1rem; transition: transform 0.3s, box-shadow 0.3s; border: none; cursor: pointer; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .highlight { color: var(--accent); }
+        .subtitle { font-size: 1.3rem; margin-bottom: 15px; opacity: 0.95; }
+        .description { font-size: 1rem; margin-bottom: 30px; opacity: 0.9; }
+        .btn { display: inline-block; padding: 12px 35px; background: var(--accent); color: var(--primary-dark); text-decoration: none; border-radius: 30px; font-weight: bold; font-size: 1rem; transition: transform 0.3s, box-shadow 0.3s; border: none; cursor: pointer; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--shadow-hover); }
 
         /* ========== 通用 Section ========== */
         .section { padding: 80px 20px; text-align: center; }
-        .section-alt { background-color: #f0efff; }
-        .section-title { font-size: 2rem; margin-bottom: 40px; color: #6c5ce7; position: relative; display: inline-block; }
-        .section-title::after { content: ''; display: block; width: 50px; height: 4px; background: #ffeaa7; margin: 8px auto 0; border-radius: 2px; }
+        .section-alt { background-color: var(--bg-alt); }
+        .section-title { font-size: 2rem; margin-bottom: 40px; color: var(--primary); position: relative; display: inline-block; }
+        .section-title::after { content: ''; display: block; width: 50px; height: 4px; background: var(--accent); margin: 8px auto 0; border-radius: 2px; }
 
         /* ========== 关于我 ========== */
-        .about-card { max-width: 700px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+        .about-card { max-width: 700px; margin: 0 auto; background: var(--bg-card); padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px var(--shadow-medium); }
         .avatar { font-size: 4rem; margin-bottom: 10px; }
-        .about-card h3 { color: #6c5ce7; margin-bottom: 15px; font-size: 1.5rem; }
-        .about-card p { margin-bottom: 25px; color: #555; }
+        .about-card h3 { color: var(--primary); margin-bottom: 15px; font-size: 1.5rem; }
+        .about-card p { margin-bottom: 25px; color: var(--text-secondary); }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left; }
-        .info-item { padding: 12px; background: #f7f7ff; border-radius: 10px; }
-        .info-label { display: block; font-size: 0.85rem; color: #999; margin-bottom: 4px; }
-        .info-value { font-weight: 600; color: #333; }
+        .info-item { padding: 12px; background: var(--bg-alt); border-radius: 10px; }
+        .info-label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+        .info-value { font-weight: 600; color: var(--text-main); }
 
         /* ========== 技能卡片 ========== */
         .skills-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto; }
-        .skill-card { background: #fff; padding: 30px 20px; border-radius: 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.3s; }
-        .skill-card:hover { transform: translateY(-5px); }
+        .skill-card { background: var(--bg-card); padding: 30px 20px; border-radius: 14px; box-shadow: 0 4px 15px var(--shadow-light); transition: transform 0.3s; }
+        .skill-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px var(--shadow-medium); }
         .skill-icon { font-size: 2.5rem; margin-bottom: 10px; }
-        .skill-card h3 { margin-bottom: 12px; color: #6c5ce7; }
-        .skill-bar { width: 100%; height: 10px; background: #e0e0e0; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
-        .skill-progress { height: 100%; width: 0%; background: linear-gradient(90deg, #6c5ce7, #a29bfe); border-radius: 5px; transition: width 1s ease; }
-        .skill-card p { font-size: 0.9rem; color: #777; }
+        .skill-card h3 { margin-bottom: 12px; color: var(--primary); }
+        .skill-bar { width: 100%; height: 10px; background: #d1e7d6; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+        .skill-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--primary), var(--primary-light)); border-radius: 5px; transition: width 1s ease; }
+        .skill-card p { font-size: 0.9rem; color: var(--text-secondary); }
 
         /* ========== 联系方式 ========== */
         .contact-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; max-width: 900px; margin: 0 auto; }
         .contact-form { flex: 1; min-width: 280px; display: flex; flex-direction: column; gap: 15px; }
-        .contact-form input, .contact-form textarea { padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.3s; }
-        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: #6c5ce7; }
+        .contact-form input, .contact-form textarea { padding: 12px 16px; border: 2px solid #d1e7d6; border-radius: 10px; font-size: 1rem; font-family: inherit; transition: border-color 0.3s; color: var(--text-main); background: var(--bg-card); }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--primary); }
         .contact-info { flex: 1; min-width: 280px; text-align: left; display: flex; flex-direction: column; justify-content: center; gap: 20px; }
-        .contact-info p { font-size: 1.05rem; color: #555; }
-        .contact-info a { color: #6c5ce7; text-decoration: none; }
+        .contact-info p { font-size: 1.05rem; color: var(--text-secondary); }
+        .contact-info a { color: var(--primary); text-decoration: none; font-weight: 500; }
         .contact-info a:hover { text-decoration: underline; }
 
         /* ========== 页脚 ========== */
-        footer { text-align: center; padding: 25px; background: #6c5ce7; color: #fff; font-size: 0.95rem; }
+        footer { text-align: center; padding: 25px; background: var(--primary); color: #fff; font-size: 0.95rem; }
+
+        /* 搜索定位高亮动画 */
+        .search-pulse { animation: highlightPulse 1.5s ease; }
+        @keyframes highlightPulse { 0% { background: transparent; } 30% { background: rgba(244, 208, 63, 0.35); } 100% { background: transparent; } }
+
+        /* 提示框样式 */
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary-dark); color: #fff; padding: 12px 24px; border-radius: 8px; font-size: 0.9rem; z-index: 9999; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
 
         /* ========== 响应式（手机端） ========== */
         @media (max-width: 768px) {
             .menu-btn { display: block; }
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: #fff; padding: 20px; gap: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+            .search-box.desktop-search { display: none; }
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: #fff; padding: 20px; gap: 15px; box-shadow: 0 4px 10px var(--shadow-medium); align-items: flex-start; }
             .nav-links.active { display: flex; }
             .hero h1 { font-size: 2rem; }
             .info-grid { grid-template-columns: 1fr; }
+            .mobile-search { display: none; width: 100%; margin-top: 5px; }
+            .nav-links.active .mobile-search { display: flex; }
+            .mobile-search .search-box { margin: 0; width: 100%; }
+            .mobile-search input { flex: 1; }
         }
     </style>
 </head>
@@ -81,11 +118,21 @@
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="logo">转转's Blog</div>
+        <form class="search-box desktop-search" onsubmit="handleSearch(event)">
+            <input type="text" placeholder="搜索内容..." autocomplete="off">
+            <button type="submit">🔍</button>
+        </form>
         <ul class="nav-links">
             <li><a href="#home">首页</a></li>
             <li><a href="#about">关于我</a></li>
             <li><a href="#skills">技能</a></li>
             <li><a href="#contact">联系方式</a></li>
+            <li class="mobile-search">
+                <form class="search-box" onsubmit="handleSearch(event)">
+                    <input type="text" placeholder="搜索内容..." autocomplete="off">
+                    <button type="submit">🔍</button>
+                </form>
+            </li>
         </ul>
         <div class="menu-btn" onclick="toggleMenu()">☰</div>
     </nav>
@@ -108,12 +155,12 @@
             <h3>转转</h3>
             <p>我是一名法学专业的大二学生，目前就读于西南政法大学。
                我对软件开发充满热情，正在学习 <strong>Python</strong>、<strong>Java</strong> 和 <strong>Web开发</strong>。
-               课余时间喜欢参加编程比赛和开源项目。</p>
+               </p>
             <div class="info-grid">
-                <div class="info-item"><span class="info-label">学校</span><span class="info-value">XX大学</span></div>
+                <div class="info-item"><span class="info-label">学校</span><span class="info-value">西南政法大学</span></div>
                 <div class="info-item"><span class="info-label">专业</span><span class="info-value">法学</span></div>
                 <div class="info-item"><span class="info-label">年级</span><span class="info-value">大二</span></div>
-                <div class="info-item"><span class="info-label">兴趣</span><span class="info-value">编程、阅读、跑步</span></div>
+                <div class="info-item"><span class="info-label">兴趣</span><span class="info-value">运动、阅读、追剧</span></div>
             </div>
         </div>
     </section>
@@ -149,13 +196,54 @@
 
     <!-- 页脚 -->
     <footer>
-        <p>&copy; 2025 张三的个人网站 | 由 HTML + CSS + JS 构建 ❤️</p>
+        <p>&copy; 2025 转转的个人网站 | 由 HTML + CSS + JS 构建 ❤️</p>
     </footer>
 
     <script>
         // 移动端菜单切换
         function toggleMenu() {
             document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // 搜索功能
+        function handleSearch(event) {
+            event.preventDefault();
+            const input = event.target.querySelector('input');
+            const query = input.value.trim().toLowerCase();
+            if (!query) return;
+
+            document.querySelectorAll('.search-pulse').forEach(el => el.classList.remove('search-pulse'));
+
+            const searchTargets = document.querySelectorAll('h1, h2, h3, p, .info-value, .skill-card h3');
+            let found = false;
+
+            for (let target of searchTargets) {
+                if (target.innerText.toLowerCase().includes(query)) {
+                    const section = target.closest('.section, .hero, .about-card') || target;
+                    section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    section.classList.add('search-pulse');
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                showToast('未找到相关内容，试试：法学、Python、西南政法、联系方式等');
+            }
+            input.value = '';
+        }
+
+        // 提示框工具函数
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => toast.style.opacity = 1);
+            setTimeout(() => {
+                toast.style.opacity = 0;
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
         }
 
         // 技能进度条滚动动画
@@ -187,3 +275,4 @@
     </script>
 </body>
 </html>
+
